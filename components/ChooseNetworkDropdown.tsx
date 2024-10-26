@@ -15,7 +15,7 @@ function ChooseNetworkDropdown(props: {version: number, changeNetworkVersion: (v
         Choose a model
       </label>
       <select
-        value={parsedVersion}
+        value={props.version}
         onChange={handleChange}
         style={{
           padding: '5px 10px',
@@ -26,7 +26,7 @@ function ChooseNetworkDropdown(props: {version: number, changeNetworkVersion: (v
         }}
       >
         {Object.keys(MODELS).map(version => (
-          <option key={version} value={version}>{parsedVersion}</option>
+          <option key={version} value={version}>v{+version + 1}</option>
         ))}
       </select>
 

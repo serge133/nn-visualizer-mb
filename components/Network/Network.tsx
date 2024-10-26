@@ -1,10 +1,9 @@
 'use client';
 
-import { MODEL_VERSIONS, MODELS } from "@/math/models";
+import { ACTIVATION_THRESHOLDS_V1, MODEL_VERSIONS, MODELS, ModelType } from "@/math/models";
 import {
   LayerType,
   NeuronType,
-  ACTIVATION_THRESHOLDS_V1,
   NetworkType
 } from "@/math/network";
 import { ReactElement, useEffect, useState } from "react";
@@ -44,8 +43,8 @@ function Layer(props: { neurons: LayerType; activations: number[]; threshold: nu
   );
 }
 
-export default function Network(props: { activations: {[key: string]: number[]}, network: NetworkType }) {
-  const { activations, network } = props;
+export default function Network(props: { version: MODEL_VERSIONS, activations: {[key: string]: number[]}, model: ModelType }) {
+  const { version, activations, model } = props;
   // const [output, activations] = forward_propogation(
   //   props.inputs, // One dimensional list of numbers
   //   NETWORK_V1, // network with weights and biases
@@ -89,6 +88,7 @@ export default function Network(props: { activations: {[key: string]: number[]},
   }
 
   useEffect(() => {
+    setLines([]);
     const parent_element = document.getElementById("neural_network");
 
     // Connecting the input layer to the neural network
@@ -97,7 +97,7 @@ export default function Network(props: { activations: {[key: string]: number[]},
       const prev_neuron_html = document.getElementById(nid);
 
       // Connecting to the first layer of the neural network
-      for (const neuron of network[0]) {
+      for (const neuron of model.network[0]) {
         const next_neuron = document.getElementById(neuron.id);
         connectDivs(parent_element, prev_neuron_html, next_neuron);
       }
@@ -105,11 +105,11 @@ export default function Network(props: { activations: {[key: string]: number[]},
 
     // Now connecting rest of the neural network 
     let prev_layer = 0;
-    while (prev_layer < network.length - 1) {
+    while (prev_layer < model.network.length - 1) {
       const next_layer = prev_layer + 1;
-      for (const prev_neuron of network[prev_layer]) {
+      for (const prev_neuron of model.network[prev_layer]) {
         const prev_neuron_html = document.getElementById(prev_neuron.id);
-        for (const next_neuron of network[next_layer]) {
+        for (const next_neuron of model.network[next_layer]) {
           const next_neuron_html = document.getElementById(next_neuron.id);
           connectDivs(parent_element, prev_neuron_html, next_neuron_html);
         }
@@ -119,7 +119,7 @@ export default function Network(props: { activations: {[key: string]: number[]},
       prev_layer += 1;
     }
 
-  }, []);
+  }, [version]);
 
   return (
     <div className="container min-h-min min-w-min inline-block">
@@ -148,7 +148,7 @@ export default function Network(props: { activations: {[key: string]: number[]},
           ))}
         </div>
 
-        {MODELS[MODEL_VERSIONS.v1].map((layer, layer_index) => {
+        {model.network.map((layer, layer_index) => {
           const layer_activations = activations[`A${layer_index + 1}`];
           return (
             <Layer

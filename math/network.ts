@@ -9,16 +9,16 @@ export type LayerType = NeuronType[];
 export type NetworkType = LayerType[];
 
 
-function relu_activation(x: number): number {
+export function relu_activation(x: number): number {
     return Math.max(x, 0);
 }
 
-function sigmoid_activation(x: number): number {
+export function sigmoid_activation(x: number): number {
     return 1 / (1 + Math.exp(-x));
 }
 
 // The simplest activation function
-const linear_activation = (x: number) => x;
+export const linear_activation = (x: number) => x;
 
 // Data Structure 
 function create_neuron(weights: number[], bias: number): NeuronType {
@@ -103,23 +103,3 @@ function network_summary(network: NetworkType): void {
     console.log(network);
 }
 
-// * --------- NETWORK V1 ---------
-// The thresholds of each layer that cause neuron to glow (not including input)
-export const ACTIVATION_THRESHOLDS_V1 = [0, 0.5];
-// Activation function of each layer
-export const ACTIVATIONS_V1 = [
-    relu_activation,
-    sigmoid_activation
-];
-
-// Weights of V1 network 
-export const WEIGHTS_V1 = [
-    [[ 0.34660286, -0.01123584], [-0.16000803,  0.37327516], [-0.20330293, -0.285043  ], [ 0.03866423,  0.00664284]], // First Layer
-    [[-0.819887  , -0.60944384, -0.60550654,  0.81135994]] // Output Layer
-]
-
-// Bias of V1 Network 
-export const BIAS_V1 = [
-    [-1.3854994, -1.2200477, -0.6707291,  2.2454503],
-    [1.962239]
-]
