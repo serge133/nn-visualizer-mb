@@ -9,6 +9,7 @@ import { MODELS, MODEL_VERSIONS } from "@/math/models";
 import ChooseNetworkDropdown from "@/components/ChooseNetworkDropdown";
 import V1NetworkImage from "@/public/images/network_v1.jpg";
 import V2NetworkImage from "@/public/images/network_v2.jpg";
+import Credit from "@/components/Credit";
 
 const BG_IMAGES: { [key in MODEL_VERSIONS]: StaticImageData } = {
   [MODEL_VERSIONS.v1]: V1NetworkImage,
@@ -63,6 +64,7 @@ export default function Home() {
         changeNetworkVersion={setModelVersion}
         version={modelVersion}
       />
+      <Credit />
     </div>
   );
 }

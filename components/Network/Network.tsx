@@ -1,10 +1,9 @@
 'use client';
 
-import { ACTIVATION_THRESHOLDS_V1, MODEL_VERSIONS, MODELS, ModelType } from "@/math/models";
+import { ACTIVATION_THRESHOLDS_V1, MODEL_VERSIONS, ModelType } from "@/math/models";
 import {
   LayerType,
   NeuronType,
-  NetworkType
 } from "@/math/network";
 import { ReactElement, useEffect, useState } from "react";
 
@@ -123,22 +122,6 @@ export default function Network(props: { version: MODEL_VERSIONS, activations: {
 
   return (
     <div className="container min-h-min min-w-min inline-block">
-      {/* <input
-        type="range"
-        min="-30"
-        max="30"
-        value={inputs[0]}
-        onChange={(e) => changeInput(e, 0)}
-      />
-      <input
-        type="range"
-        min="-30"
-        max="30"
-        value={inputs[1]}
-        onChange={(e) => changeInput(e, 1)}
-      /> */}
-
-
       <div className="flex flex-row w-min items-center relative z-30" id="neural_network">
         <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
         {/* Input Layer */}
@@ -154,7 +137,7 @@ export default function Network(props: { version: MODEL_VERSIONS, activations: {
             <Layer
               key={layer[0].bias}
               neurons={layer}
-              threshold={ACTIVATION_THRESHOLDS_V1[layer_index]}
+              threshold={model.activation_thresholds[layer_index]}
               activations={layer_activations}
             />
           );

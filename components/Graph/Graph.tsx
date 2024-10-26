@@ -85,7 +85,7 @@ export default function Graph({
 
   return (
     <div className="inline-block">
-      <div className="border-b-2 border-l-2 cursor-pointer">
+      <div className="border rounded-md border-slate-700 border-rose-500 cursor-pointer">
         <svg
           width={width}
           height={height}
