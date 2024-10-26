@@ -1,14 +1,13 @@
 'use client';
 
+import { MODEL_VERSIONS, MODELS } from "@/math/models";
 import {
   LayerType,
   NeuronType,
-  ACTIVATIONS_V1,
-  forward_propogation,
-  NETWORK_V1,
-  ACTIVATION_THRESHOLDS_V1
+  ACTIVATION_THRESHOLDS_V1,
+  NetworkType
 } from "@/math/network";
-import { ChangeEvent, ReactElement, useEffect, useState } from "react";
+import { ReactElement, useEffect, useState } from "react";
 
 function Neuron(props: {
   neuron?: NeuronType;
@@ -45,24 +44,24 @@ function Layer(props: { neurons: LayerType; activations: number[]; threshold: nu
   );
 }
 
-export default function Network() {
-  const [inputs, setInputs] = useState([0, 0]);
-
-  const [output, activations] = forward_propogation(
-    inputs, // One dimensional list of numbers
-    NETWORK_V1, // network with weights and biases
-    ACTIVATIONS_V1 // activation functions
-  );
+export default function Network(props: { activations: {[key: string]: number[]}, network: NetworkType }) {
+  const { activations, network } = props;
+  // const [output, activations] = forward_propogation(
+  //   props.inputs, // One dimensional list of numbers
+  //   NETWORK_V1, // network with weights and biases
+  //   ACTIVATIONS_V1 // activation functions
+  // );
 
   const [lines, setLines] = useState<ReactElement[]>([]);
 
-  function changeInput(e: ChangeEvent<HTMLInputElement>, index: number) {
-    setInputs((prevInputs) => {
-      const copyInputs = [...prevInputs];
-      copyInputs[index] = +e.target.value;
-      return copyInputs;
-    });
-  }
+  // props.updateOutput(output);
+  // function changeInput(e: ChangeEvent<HTMLInputElement>, index: number) {
+  //   setInputs((prevInputs) => {
+  //     const copyInputs = [...prevInputs];
+  //     copyInputs[index] = +e.target.value;
+  //     return copyInputs;
+  //   });
+  // }
 
   // Draws a line between the neurons of each layer
   // Parent needed to subtract out coordinates for relative positioning of svg line
@@ -93,12 +92,12 @@ export default function Network() {
     const parent_element = document.getElementById("neural_network");
 
     // Connecting the input layer to the neural network
-    for (let i = 0; i < inputs.length; i++) {
+    for (let i = 0; i < props.activations["A0"].length; i++) {
       const nid = `NEURON_${i}`;
       const prev_neuron_html = document.getElementById(nid);
 
       // Connecting to the first layer of the neural network
-      for (const neuron of NETWORK_V1[0]) {
+      for (const neuron of network[0]) {
         const next_neuron = document.getElementById(neuron.id);
         connectDivs(parent_element, prev_neuron_html, next_neuron);
       }
@@ -106,11 +105,11 @@ export default function Network() {
 
     // Now connecting rest of the neural network 
     let prev_layer = 0;
-    while (prev_layer < NETWORK_V1.length - 1) {
+    while (prev_layer < network.length - 1) {
       const next_layer = prev_layer + 1;
-      for (const prev_neuron of NETWORK_V1[prev_layer]) {
+      for (const prev_neuron of network[prev_layer]) {
         const prev_neuron_html = document.getElementById(prev_neuron.id);
-        for (const next_neuron of NETWORK_V1[next_layer]) {
+        for (const next_neuron of network[next_layer]) {
           const next_neuron_html = document.getElementById(next_neuron.id);
           connectDivs(parent_element, prev_neuron_html, next_neuron_html);
         }
@@ -123,8 +122,8 @@ export default function Network() {
   }, []);
 
   return (
-    <div className="container">
-      <input
+    <div className="container min-h-min min-w-min inline-block">
+      {/* <input
         type="range"
         min="-30"
         max="30"
@@ -137,10 +136,10 @@ export default function Network() {
         max="30"
         value={inputs[1]}
         onChange={(e) => changeInput(e, 1)}
-      />
+      /> */}
 
 
-      <div className="flex flex-row w-min items-center relative" id="neural_network">
+      <div className="flex flex-row w-min items-center relative z-30" id="neural_network">
         <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
         {/* Input Layer */}
         <div className="w-min grid gap-4 mr-16">
@@ -149,7 +148,7 @@ export default function Network() {
           ))}
         </div>
 
-        {NETWORK_V1.map((layer, layer_index) => {
+        {MODELS[MODEL_VERSIONS.v1].map((layer, layer_index) => {
           const layer_activations = activations[`A${layer_index + 1}`];
           return (
             <Layer
