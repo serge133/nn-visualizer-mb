@@ -1,6 +1,6 @@
 'use client';
 
-import { ACTIVATION_THRESHOLDS_V1, MODEL_VERSIONS, ModelType } from "@/math/models";
+import { MODEL_VERSIONS, ModelType } from "@/math/models";
 import {
   LayerType,
   NeuronType,

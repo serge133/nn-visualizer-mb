@@ -1,6 +1,6 @@
 "use client";
 import * as d3 from "d3";
-import { MouseEventHandler, useRef } from "react";
+import { useRef } from "react";
 
 type ScatterplotProps = {
   width: number;
@@ -46,8 +46,8 @@ export default function Graph({
     );
   });
 
-  const onMouseOverGraph = (e: MouseEventHandler<SVGSVGElement>) => {
-    let [x, y] = d3.pointer(e);
+  const onMouseOverGraph = (event: React.MouseEvent<HTMLOrSVGElement>) => {
+    let [x, y] = d3.pointer(event);
     x = scaleBack(x);
     y = scaleBack(y);
     x = Math.round(x);
@@ -85,7 +85,7 @@ export default function Graph({
 
   return (
     <div className="inline-block">
-      <div className="border rounded-md border-slate-700 border-rose-500 cursor-pointer">
+      <div className="border rounded-md border-slate-700 cursor-pointer">
         <svg
           width={width}
           height={height}
