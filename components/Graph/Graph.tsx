@@ -50,22 +50,33 @@ export default function Graph({
     let [x, y] = d3.pointer(event);
     x = scaleBack(x);
     y = scaleBack(y);
-    x = Math.round(x);
-    y = Math.round(y);
+    // Rounds to nearest half
+    x = Math.round(x * 2) / 2;
+    y = Math.round(y * 2) / 2;
     updateInputs([x, y]);
   };
 
+  const colors = ["orange", "blue"];
   const CursorPoint = () => {
     let color = "blue";
     let opacity = 1;
-
-    // Blue
-    if (nnOutput[0] >= 0.5) {
-      color = "blue";
-      opacity = (nnOutput[0] * 2) - 0.5;
-    } else {
-      opacity =  1 - nnOutput[0] * 2;
-      color = "orange";
+    switch(nnOutput.length) {
+      // Binary Classification
+      case 1:
+        color = colors[Math.round(nnOutput[0])];
+        opacity = 1;
+    
+        // Blue
+        if (nnOutput[0] >= 0.5) {
+          // [0.5, 1] mapped to [0, 1]
+          opacity = (nnOutput[0] - 0.5) * 2;
+        } else {
+          // [0.5, 0] mapped to [0, 1] 
+          opacity =  1 - nnOutput[0] * 2;
+        }
+        break;
+      default:
+        break;
     }
 
     return (

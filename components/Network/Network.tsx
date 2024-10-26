@@ -11,7 +11,7 @@ function Neuron(props: {
   neuron?: NeuronType;
   activation: number;
   nid: string;
-  threshold: number;
+  threshold: number; 
 }) {
   return (
     <div
