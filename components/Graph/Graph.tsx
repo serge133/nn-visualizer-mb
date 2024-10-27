@@ -1,6 +1,8 @@
 "use client";
 import * as d3 from "d3";
 import { useRef } from "react";
+import CursorPoint from "@/components/CursorPoint";
+import { ClassificationType } from "@/math/network";
 
 type ScatterplotProps = {
   width: number;
@@ -9,6 +11,7 @@ type ScatterplotProps = {
   updateInputs: (update: number[]) => void;
   nnOutput: number[];
   nnInputs: number[];
+  classificationType: ClassificationType;
 };
 
 export default function Graph({
@@ -18,6 +21,7 @@ export default function Graph({
   updateInputs,
   nnOutput,
   nnInputs,
+  classificationType
 }: ScatterplotProps) {
   // Width and height are same!!
   const scale = d3
@@ -56,55 +60,61 @@ export default function Graph({
     updateInputs([x, y]);
   };
 
-  const colors = ["orange", "blue"];
-  const CursorPoint = () => {
-    let color = "blue";
-    let opacity = 1;
-    switch(nnOutput.length) {
-      // Binary Classification
-      case 1:
-        color = colors[Math.round(nnOutput[0])];
-        opacity = 1;
+  // const colors = ["orange", "blue"];
+  // const CursorPoint = () => {
+  //   let color = "blue";
+  //   let opacity = 1;
+  //   switch(nnOutput.length) {
+  //     // Binary Classification
+  //     case 1:
+  //       color = colors[Math.round(nnOutput[0])];
+  //       opacity = 1;
     
-        // Blue
-        if (nnOutput[0] >= 0.5) {
-          // [0.5, 1] mapped to [0, 1]
-          opacity = (nnOutput[0] - 0.5) * 2;
-        } else {
-          // [0.5, 0] mapped to [0, 1] 
-          opacity =  1 - nnOutput[0] * 2;
-        }
-        break;
-      default:
-        break;
-    }
+  //       // Blue
+  //       if (nnOutput[0] >= 0.5) {
+  //         // [0.5, 1] mapped to [0, 1]
+  //         opacity = (nnOutput[0] - 0.5) * 2;
+  //       } else {
+  //         // [0.5, 0] mapped to [0, 1] 
+  //         opacity =  1 - nnOutput[0] * 2;
+  //       }
+  //       break;
+  //     default:
+  //       break;
+  //   }
 
-    return (
-      <circle
-        key={"Cursor"}
-        r={20}
-        cx={scale(nnInputs[0])}
-        cy={scale(nnInputs[1])}
-        opacity={1}
-        stroke={color}
-        fill={color}
-        fillOpacity={opacity}
-        strokeWidth={1}
-      />
-    );
-  };
+  //   return (
+  //     <circle
+  //       key={"Cursor"}
+  //       r={20}
+  //       cx={scale(nnInputs[0])}
+  //       cy={scale(nnInputs[1])}
+  //       opacity={1}
+  //       stroke={color}
+  //       fill={color}
+  //       fillOpacity={opacity}
+  //       strokeWidth={1}
+  //     />
+  //   );
+  // };
 
   return (
     <div className="inline-block">
-      <div className="border rounded-md border-slate-700 cursor-pointer">
+      <div className="border rounded-md border-slate-700 cursor-none">
         <svg
           width={width}
           height={height}
           onMouseMove={onMouseOverGraph}
           ref={graphRef}
         >
-          {/* Cursor Point */}
-          <CursorPoint />
+          <CursorPoint 
+            classification={classificationType}
+            shapes={["circle", "circle"]}
+            maxNNOutput={nnOutput[0]}
+            labelPrediction={Math.round(nnOutput[0])}
+            x = {scale(nnInputs[0])}
+            y = {scale(nnInputs[1])}
+          />
           {points}
         </svg>
       </div>

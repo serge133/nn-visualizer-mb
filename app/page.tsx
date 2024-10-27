@@ -45,8 +45,6 @@ export default function Home() {
           <Image
             src={BG_IMAGES[modelVersion]}
             alt="Test"
-            // objectFit="cover"
-            // layout="fill"
           />
         </div>
       <div className="flex flex-row">
@@ -54,6 +52,7 @@ export default function Home() {
         <Graph
           nnOutput={output}
           nnInputs={inputs}
+          classificationType={model.classificationType}
           width={600}
           height={600}
           data={MODEL_DATA[modelVersion]}

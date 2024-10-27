@@ -8,6 +8,8 @@ export type LayerType = NeuronType[];
 
 export type NetworkType = LayerType[];
 
+export type ClassificationType = "binary" | "categorical";
+
 
 export function relu_activation(x: number): number {
     return Math.max(x, 0);

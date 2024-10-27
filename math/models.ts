@@ -2,6 +2,7 @@
 // export const network_v1 = create_network(WEIGHTS, BIAS);
 
 import {
+  ClassificationType,
   NetworkType,
   relu_activation,
   sigmoid_activation,
@@ -187,16 +188,19 @@ export type ModelType = {
   network: NetworkType;
   activation_thresholds: number[];
   activation_functions: Function[];
+  classificationType: ClassificationType;
 };
 
 export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
   [MODEL_VERSIONS.v1]: {
     network: NETWORK_V1,
+    classificationType: "binary",
     activation_thresholds: ACTIVATION_THRESHOLDS_V1,
     activation_functions: ACTIVATIONS_V1,
   },
   [MODEL_VERSIONS.v2]: {
     network: NETWORK_V2,
+    classificationType: "binary",
     activation_thresholds: [0, 0, 0.5],
     activation_functions: [relu_activation, relu_activation, sigmoid_activation]
   }
