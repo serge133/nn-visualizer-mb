@@ -6,27 +6,42 @@ import {
   NeuronType,
 } from "@/math/network";
 import { ReactElement, useEffect, useState } from "react";
+import Tooltip from "../Tooltip";
 
 function Neuron(props: {
   neuron?: NeuronType;
   activation: number;
   nid: string;
   threshold: number; 
+  parameters?: NeuronType;
+  layer_number: number;
 }) {
+
+  const [showTooltip, setShowTooltip] = useState<boolean>(false);
+
+  const tooltipText = `Layer: [${props.layer_number}]
+Parameters
+${props.parameters ? props.parameters.weights.map((w, i) => `w${i + 1} = ${w}`).join("\n"): "None"} 
+b = ${props.parameters ? props.parameters?.bias : 'None'}
+`
+
   return (
     <div
       id={props.nid}
-      className="border-2 h-20 w-20 rounded-full flex items-center justify-center bg-black"
+      className="cursor-pointer border-2 h-20 w-20 rounded-full flex items-center justify-center bg-black relative"
       style={{
         borderColor: props.activation > props.threshold ? "lime" : "white"
       }}
+      onMouseEnter={() => setShowTooltip(true)}
+      onMouseLeave={() => setShowTooltip(false)}
     >
+      <Tooltip title={props.nid} show={showTooltip}>{tooltipText}</Tooltip>
       {props.activation.toFixed(2)}
     </div>
   );
 }
 
-function Layer(props: { neurons: LayerType; activations: number[]; threshold: number }) {
+function Layer(props: { layer_number: number; neurons: LayerType; activations: number[]; threshold: number; parameters: LayerType; }) {
   return (
     <div className="w-min grid gap-4 mr-24">
       {props.neurons.map((neuron, index) => (
@@ -36,6 +51,8 @@ function Layer(props: { neurons: LayerType; activations: number[]; threshold: nu
           neuron={neuron}
           threshold={props.threshold}
           activation={props.activations[index]}
+          parameters={props.parameters[index]}
+          layer_number={props.layer_number}
         />
       ))}
     </div>
@@ -127,7 +144,7 @@ export default function Network(props: { version: MODEL_VERSIONS, activations: {
         {/* Input Layer */}
         <div className="w-min grid gap-4 mr-16">
           {(activations["A0"] ?? []).map((a: number, index: number) => (
-            <Neuron nid={`NEURON_${index}`} key={index} activation={a} threshold={Infinity} />
+            <Neuron nid={`NEURON_${index}`} key={index} activation={a} threshold={Infinity} layer_number={0} />
           ))}
         </div>
 
@@ -136,9 +153,11 @@ export default function Network(props: { version: MODEL_VERSIONS, activations: {
           return (
             <Layer
               key={layer[0].bias}
+              layer_number={layer_index + 1}
               neurons={layer}
               threshold={model.activation_thresholds[layer_index]}
               activations={layer_activations}
+              parameters={model.network[layer_index]}
             />
           );
         })}
