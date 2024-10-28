@@ -1,7 +1,5 @@
 // What the cursor looks like hovering over the graph
-
 import { ClassificationType } from "@/math/network";
-import { ReactElement } from "react";
 
 
 type ShapeTypes = "circle" | "triangle";
@@ -16,40 +14,7 @@ type CursorProps = {
   labelPrediction: number; // Integer that gives the predicted label of the output
 };
 
-type ShapeElementFunctionType = (
-  x: number,
-  y: number,
-  color: string,
-  opacity: number
-) => ReactElement;
-
 const COLORS = ["orange", "blue", "lime"];
-const Shape: { [key in ShapeTypes]: ShapeElementFunctionType } = {
-  circle: (x, y, color, opacity) => (
-    <circle
-      key={"Cursor"}
-      r={20}
-      cx={x}
-      cy={y}
-      opacity={1}
-      stroke={color}
-      fill={color}
-      fillOpacity={opacity}
-      strokeWidth={1}
-    />
-  ),
-  triangle: (x, y, color, opacity) => (
-      <polygon 
-        points="25,10 45,45 5,45"
-        transform={`translate(${x - 25}, ${y - 25})`} 
-        opacity={1}
-        stroke={color}
-        fill={color} 
-        fillOpacity={opacity}
-        strokeWidth={1}
-        />
-  ),
-};
 
 const CursorPoint = (props: CursorProps) => {
   const classificationStyleFunction: {
@@ -79,11 +44,18 @@ const CursorPoint = (props: CursorProps) => {
 
   const [color, opacity] = classificationStyleFunction[props.classification]();
 
-  return Shape[props.shapes[props.labelPrediction]](
-    props.x,
-    props.y,
-    color,
-    opacity
+  return (
+    <circle
+      key={"Cursor"}
+      r={20}
+      cx={props.x}
+      cy={props.y}
+      opacity={1}
+      stroke={color}
+      fill={color}
+      fillOpacity={opacity}
+      strokeWidth={1}
+    />
   );
 };
 

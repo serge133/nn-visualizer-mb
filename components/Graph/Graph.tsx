@@ -32,6 +32,7 @@ export default function Graph({
   classificationType,
   animateDefault
 }: ScatterplotProps) {
+
   const [sleepAnimate, setSleepAnimate] = useState<boolean>(animateDefault);
   const [animateCheckbox, setAnimateCheckbox] = useState<boolean>(animateDefault);
 

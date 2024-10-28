@@ -6,6 +6,7 @@ import { ReactElement, useEffect, useState } from "react";
 import Tooltip from "../Tooltip";
 
 const LINE_WIDTH = 0.5;
+const MAX_SHOW_INPUT_NEURONS = 7;
 
 function Neuron(props: {
   neuron?: NeuronType;
@@ -19,19 +20,20 @@ function Neuron(props: {
   const isActivated = props.activation > props.threshold;
 
   const tooltipText = `Layer: [${props.layer_number}]
-Parameters
+# of Parameters: ${props.parameters?.weights.length ?? -1 + 1}
 ${
   props.parameters
     ? props.parameters.weights
+        .slice(0, 10)
         .map((w, i) => `w${i + 1} = ${w.toFixed(6)}`)
         .join("\n")
     : "None"
 } 
-b = ${props.parameters ? props.parameters?.bias : "None"}
+b = ${props.parameters ? props.parameters?.bias.toFixed(6) : "None"}
 `;
 
   const activatedClassname = " border-none bg-green-500 text-black font-bold";
-  const nonActivatedClassname = " border bg-black text-slate-500"
+  const nonActivatedClassname = " border bg-black text-slate-500";
 
   return (
     <div
@@ -78,6 +80,7 @@ export default function Network(props: {
   model: ModelType;
 }) {
   const { version, activations, model } = props;
+  const inputLength = activations["A0"].length;
   // const [output, activations] = forward_propogation(
   //   props.inputs, // One dimensional list of numbers
   //   NETWORK_V1, // network with weights and biases
@@ -103,7 +106,8 @@ export default function Network(props: {
     div2: HTMLElement | null
   ) {
     if (!(div1 && div2 && parent_element))
-      throw new Error("Elements can not be connected");
+      return;
+      // throw new Error("Elements can not be connected");
 
     // Get the positions of the two divs
     const parent_rect = parent_element.getBoundingClientRect();
@@ -161,18 +165,19 @@ export default function Network(props: {
 
       prev_layer += 1;
     }
-  }, [version]);
+  }, [version, inputLength]);
 
   return (
-    <div className="container min-h-min min-w-min inline-block mr-10">
+    <div className="mr-24">
       <div
+      // removed items-center
         className="flex flex-row w-min items-center relative z-30"
         id="neural_network"
       >
         <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
         {/* Input Layer */}
         <div className="w-min grid gap-4 mr-16">
-          {(activations["A0"] ?? []).map((a: number, index: number) => (
+          {activations["A0"].slice(0, MAX_SHOW_INPUT_NEURONS).map((a: number, index: number) => (
             <Neuron
               nid={`NEURON_${index}`}
               key={index}
@@ -181,6 +186,7 @@ export default function Network(props: {
               layer_number={0}
             />
           ))}
+          {activations["A0"].length > MAX_SHOW_INPUT_NEURONS ? `${activations["A0"].length - MAX_SHOW_INPUT_NEURONS} more...`: ""}
         </div>
 
         {model.network.map((layer, layer_index) => {

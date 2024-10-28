@@ -4,6 +4,8 @@
 
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
   scrollbar-width: thin; /* Makes the scrollbar thinner */
   scrollbar-color: rgba(255, 255, 255, 0.5) transparent; /* Thumb and track colors */
 }
