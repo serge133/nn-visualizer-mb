@@ -61,8 +61,7 @@ export default function Graph({
     updateInputs([x, y]);
   };
 
-  let classification = makeClassification(classificationType, nnOutput);
-  console.log(classification)
+  const classification = makeClassification(classificationType, nnOutput);
   return (
     <div className="inline-block">
       <div className="border rounded-md border-slate-700 cursor-none">

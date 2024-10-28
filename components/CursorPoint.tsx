@@ -72,7 +72,7 @@ const CursorPoint = (props: CursorProps) => {
     },
     categorical: () => {
       const color = COLORS[props.labelPrediction];
-      let opacity = props.maxNNOutput;
+      const opacity = props.maxNNOutput;
       return [color, opacity];
     },
   };
