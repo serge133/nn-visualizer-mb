@@ -15,8 +15,8 @@ import Credit from "@/components/Credit";
 const BG_IMAGES: { [key in MODEL_VERSIONS]: StaticImageData } = {
   [MODEL_VERSIONS.v1]: V1NetworkImage,
   [MODEL_VERSIONS.v2]: V2NetworkImage,
-  [MODEL_VERSIONS.v3]: V3NetworkImage
-}
+  [MODEL_VERSIONS.v3]: V3NetworkImage,
+};
 
 export default function Home() {
   const [inputs, setInputs] = useState<number[]>([0, 0]);
@@ -36,20 +36,24 @@ export default function Home() {
     setInputs(update);
   }
 
-
   return (
     <div className="w-full h-full p-5 overflow-auto relative">
-        <div
-          className="absolute top-0 left-0 -z-50"
-          style={{ width: 1550, height: 850 }}
-        >
-          <Image
-            src={BG_IMAGES[modelVersion]}
-            alt="Test"
-          />
-        </div>
-      <div className="flex flex-row">
-        <Network activations={activations} model={model} version={modelVersion} />
+        <ChooseNetworkDropdown
+        changeNetworkVersion={setModelVersion}
+        version={modelVersion}
+      />
+      <div
+        className="absolute top-10 left-0 -z-50"
+        style={{ width: 1550, height: 850 }}
+      >
+        <Image src={BG_IMAGES[modelVersion]} alt="Test" />
+      </div>
+      <div className="flex flex-row justify-between w-full">
+        <Network
+          activations={activations}
+          model={model}
+          version={modelVersion}
+        />
         <Graph
           nnOutput={output}
           nnInputs={inputs}
@@ -60,10 +64,7 @@ export default function Home() {
           updateInputs={updateInputs}
         />
       </div>
-      <ChooseNetworkDropdown
-        changeNetworkVersion={setModelVersion}
-        version={modelVersion}
-      />
+
       <Credit />
     </div>
   );

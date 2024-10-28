@@ -138,7 +138,7 @@ export default function Network(props: { version: MODEL_VERSIONS, activations: {
   }, [version]);
 
   return (
-    <div className="container min-h-min min-w-min inline-block">
+    <div className="container min-h-min min-w-min inline-block mr-10">
       <div className="flex flex-row w-min items-center relative z-30" id="neural_network">
         <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
         {/* Input Layer */}
