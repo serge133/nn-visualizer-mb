@@ -109,9 +109,11 @@ export default function Graph({
   }
 
   const classification = makeClassification(classificationType, nnOutput);
+
   return (
     <div className="inline-block">
-      <div className="border rounded-md border-slate-700 cursor-none">
+      <h1 className="text-slate-500">Model Predicts {classification.label}</h1>
+      <div className="border rounded-md border-slate-700 cursor-none" style={{ borderColor: COLORS[classification.label]}}>
         <svg
           width={width}
           height={height}

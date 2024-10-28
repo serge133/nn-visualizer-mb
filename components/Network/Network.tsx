@@ -1,47 +1,60 @@
-'use client';
+"use client";
 
 import { MODEL_VERSIONS, ModelType } from "@/math/models";
-import {
-  LayerType,
-  NeuronType,
-} from "@/math/network";
+import { LayerType, NeuronType } from "@/math/network";
 import { ReactElement, useEffect, useState } from "react";
 import Tooltip from "../Tooltip";
+
+const LINE_WIDTH = 0.5;
 
 function Neuron(props: {
   neuron?: NeuronType;
   activation: number;
   nid: string;
-  threshold: number; 
+  threshold: number;
   parameters?: NeuronType;
   layer_number: number;
 }) {
-
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
+  const isActivated = props.activation > props.threshold;
 
   const tooltipText = `Layer: [${props.layer_number}]
 Parameters
-${props.parameters ? props.parameters.weights.map((w, i) => `w${i + 1} = ${w.toFixed(6)}`).join("\n"): "None"} 
-b = ${props.parameters ? props.parameters?.bias : 'None'}
-`
+${
+  props.parameters
+    ? props.parameters.weights
+        .map((w, i) => `w${i + 1} = ${w.toFixed(6)}`)
+        .join("\n")
+    : "None"
+} 
+b = ${props.parameters ? props.parameters?.bias : "None"}
+`;
+
+  const activatedClassname = " border-none bg-green-500 text-black font-bold";
+  const nonActivatedClassname = " border bg-black text-slate-500"
 
   return (
     <div
       id={props.nid}
-      className="cursor-pointer border-2 h-20 w-20 rounded-full flex items-center justify-center bg-black relative"
-      style={{
-        borderColor: props.activation > props.threshold ? "lime" : "white"
-      }}
+      className={`cursor-pointer duration-500 h-20 w-20 rounded-full flex items-center justify-center relative${isActivated ? activatedClassname : nonActivatedClassname}`}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
-      <Tooltip title={props.nid} show={showTooltip}>{tooltipText}</Tooltip>
+      <Tooltip title={props.nid} show={showTooltip}>
+        {tooltipText}
+      </Tooltip>
       {props.activation.toFixed(2)}
     </div>
   );
 }
 
-function Layer(props: { layer_number: number; neurons: LayerType; activations: number[]; threshold: number; parameters: LayerType; }) {
+function Layer(props: {
+  layer_number: number;
+  neurons: LayerType;
+  activations: number[];
+  threshold: number;
+  parameters: LayerType;
+}) {
   return (
     <div className="w-min grid gap-4 mr-24">
       {props.neurons.map((neuron, index) => (
@@ -59,7 +72,11 @@ function Layer(props: { layer_number: number; neurons: LayerType; activations: n
   );
 }
 
-export default function Network(props: { version: MODEL_VERSIONS, activations: {[key: string]: number[]}, model: ModelType }) {
+export default function Network(props: {
+  version: MODEL_VERSIONS;
+  activations: { [key: string]: number[] };
+  model: ModelType;
+}) {
   const { version, activations, model } = props;
   // const [output, activations] = forward_propogation(
   //   props.inputs, // One dimensional list of numbers
@@ -80,10 +97,13 @@ export default function Network(props: { version: MODEL_VERSIONS, activations: {
 
   // Draws a line between the neurons of each layer
   // Parent needed to subtract out coordinates for relative positioning of svg line
-  function connectDivs(parent_element: HTMLElement | null, div1: HTMLElement | null, div2: HTMLElement | null) {
-    if (!(div1 && div2 && parent_element)) 
-      throw new Error("Elements can not be connected")
-
+  function connectDivs(
+    parent_element: HTMLElement | null,
+    div1: HTMLElement | null,
+    div2: HTMLElement | null
+  ) {
+    if (!(div1 && div2 && parent_element))
+      throw new Error("Elements can not be connected");
 
     // Get the positions of the two divs
     const parent_rect = parent_element.getBoundingClientRect();
@@ -92,14 +112,22 @@ export default function Network(props: { version: MODEL_VERSIONS, activations: {
 
     // Calculate the start and end points of the line
     // Coordinates relative to parent element
-    const x1 = (rect1.left - parent_rect.left) + rect1.width;
-    const y1 = (rect1.top - parent_rect.top) + rect1.height / 2;
-    const x2 = (rect2.left - parent_rect.left);
-    const y2 = (rect2.top - parent_rect.top) + rect2.height / 2;
+    const x1 = rect1.left - parent_rect.left + rect1.width;
+    const y1 = rect1.top - parent_rect.top + rect1.height / 2;
+    const x2 = rect2.left - parent_rect.left;
+    const y2 = rect2.top - parent_rect.top + rect2.height / 2;
 
     setLines((prevLines) => [
       ...prevLines,
-      <line key={div1.id + div2.id} x1={x1} y1={y1} x2={x2} y2={y2} stroke="white" />,
+      <line
+        key={div1.id + div2.id}
+        x1={x1}
+        y1={y1}
+        x2={x2}
+        y2={y2}
+        stroke="white"
+        strokeWidth={LINE_WIDTH}
+      />,
     ]);
   }
 
@@ -119,7 +147,7 @@ export default function Network(props: { version: MODEL_VERSIONS, activations: {
       }
     }
 
-    // Now connecting rest of the neural network 
+    // Now connecting rest of the neural network
     let prev_layer = 0;
     while (prev_layer < model.network.length - 1) {
       const next_layer = prev_layer + 1;
@@ -129,22 +157,29 @@ export default function Network(props: { version: MODEL_VERSIONS, activations: {
           const next_neuron_html = document.getElementById(next_neuron.id);
           connectDivs(parent_element, prev_neuron_html, next_neuron_html);
         }
-
       }
 
       prev_layer += 1;
     }
-
   }, [version]);
 
   return (
     <div className="container min-h-min min-w-min inline-block mr-10">
-      <div className="flex flex-row w-min items-center relative z-30" id="neural_network">
+      <div
+        className="flex flex-row w-min items-center relative z-30"
+        id="neural_network"
+      >
         <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
         {/* Input Layer */}
         <div className="w-min grid gap-4 mr-16">
           {(activations["A0"] ?? []).map((a: number, index: number) => (
-            <Neuron nid={`NEURON_${index}`} key={index} activation={a} threshold={Infinity} layer_number={0} />
+            <Neuron
+              nid={`NEURON_${index}`}
+              key={index}
+              activation={a}
+              threshold={Infinity}
+              layer_number={0}
+            />
           ))}
         </div>
 
