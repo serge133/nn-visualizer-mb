@@ -1,6 +1,6 @@
 "use client";
 import * as d3 from "d3";
-import { useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import CursorPoint from "@/components/CursorPoint";
 import { ClassificationType, makeClassification } from "@/math/network";
 
@@ -12,9 +12,15 @@ type ScatterplotProps = {
   nnOutput: number[];
   nnInputs: number[];
   classificationType: ClassificationType;
+  animateDefault: boolean;
 };
 
-const COLORS = ["orange", "blue", "lime"]
+const COLORS = ["orange", "blue", "lime"];
+const SPEED = 0.1;
+
+const MAX_RADIUS = 30;
+const OUTWARD_PROPOLSION = 0.01;
+
 export default function Graph({
   width,
   height,
@@ -23,12 +29,42 @@ export default function Graph({
   nnOutput,
   nnInputs,
   classificationType,
+  animateDefault
 }: ScatterplotProps) {
+  const [sleepAnimate, setSleepAnimate] = useState<boolean>(animateDefault);
+  const [animateCheckbox, setAnimateCheckbox] = useState<boolean>(animateDefault);
+
   // Width and height are same!!
   const scale = d3
-    .scaleLinear()
-    .domain([-35, 35]) // data goes from -30 to 30
-    .range([0, width]); // axis goes from 0 to 300
+  .scaleLinear()
+  .domain([-35, 35]) // data goes from -30 to 30
+  .range([0, width]); // axis goes from 0 to 300
+
+  useEffect(() => {
+    if (!sleepAnimate)
+      return;
+    let theta = 0; // Initial angle 
+    let phi = 0;
+    // We want a radius that expands and contracts
+    // We can use a sin function!! 
+    let radius = MAX_RADIUS * Math.cos(phi);
+    
+    const intervalId = setInterval(() => {
+      radius = MAX_RADIUS * Math.cos(phi); 
+      const x = radius * Math.cos(theta);
+      const y = radius * Math.sin(theta);
+
+      theta += SPEED;
+      phi += OUTWARD_PROPOLSION
+      phi = phi % (2*Math.PI); // To avoid this number exploding
+
+      updateInputs([x, y]);
+    }, 50)
+
+    return () => clearInterval(intervalId);
+  }, [sleepAnimate, animateCheckbox]);
+
+  
 
   const scaleBack = d3.scaleLinear().domain([0, width]).range([-35, 35]);
 
@@ -59,7 +95,14 @@ export default function Graph({
     x = Math.round(x * 2) / 2;
     y = Math.round(y * 2) / 2;
     updateInputs([x, y]);
+    setSleepAnimate(false);
   };
+
+  const onClickAnimateCheckbox = () => {
+    const newVal = !animateCheckbox;
+    setAnimateCheckbox(newVal);
+    setSleepAnimate(newVal);
+  }
 
   const classification = makeClassification(classificationType, nnOutput);
   return (
@@ -69,6 +112,7 @@ export default function Graph({
           width={width}
           height={height}
           onMouseMove={onMouseOverGraph}
+          onMouseLeave={() => setSleepAnimate(animateDefault && animateCheckbox)}
           ref={graphRef}
         >
           <CursorPoint
@@ -82,6 +126,15 @@ export default function Graph({
           {points}
         </svg>
       </div>
+      <label>
+        <input 
+            type="checkbox" 
+            checked={animateCheckbox}
+            className="mr-2"
+            onChange={onClickAnimateCheckbox} 
+          />
+          Animate (No Hover)
+      </label>
     </div>
   );
 }

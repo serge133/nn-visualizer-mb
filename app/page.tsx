@@ -62,6 +62,7 @@ export default function Home() {
           height={600}
           data={MODEL_DATA[modelVersion]}
           updateInputs={updateInputs}
+          animateDefault
         />
       </div>
 
