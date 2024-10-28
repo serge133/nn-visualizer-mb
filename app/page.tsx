@@ -9,12 +9,13 @@ import { MODELS, MODEL_VERSIONS } from "@/math/models";
 import ChooseNetworkDropdown from "@/components/ChooseNetworkDropdown";
 import V1NetworkImage from "@/public/images/network_v1.jpg";
 import V2NetworkImage from "@/public/images/network_v2.jpg";
+import V3NetworkImage from "@/public/images/network_v3.jpg";
 import Credit from "@/components/Credit";
 
 const BG_IMAGES: { [key in MODEL_VERSIONS]: StaticImageData } = {
   [MODEL_VERSIONS.v1]: V1NetworkImage,
-  [MODEL_VERSIONS.v2]: V2NetworkImage
-
+  [MODEL_VERSIONS.v2]: V2NetworkImage,
+  [MODEL_VERSIONS.v3]: V3NetworkImage
 }
 
 export default function Home() {

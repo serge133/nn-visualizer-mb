@@ -21,7 +21,7 @@ function Neuron(props: {
 
   const tooltipText = `Layer: [${props.layer_number}]
 Parameters
-${props.parameters ? props.parameters.weights.map((w, i) => `w${i + 1} = ${w}`).join("\n"): "None"} 
+${props.parameters ? props.parameters.weights.map((w, i) => `w${i + 1} = ${w.toFixed(6)}`).join("\n"): "None"} 
 b = ${props.parameters ? props.parameters?.bias : 'None'}
 `
 
