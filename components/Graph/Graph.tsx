@@ -18,8 +18,9 @@ type ScatterplotProps = {
 const COLORS = ["orange", "blue", "lime"];
 const SPEED = 0.1;
 
-const MAX_RADIUS = 30;
-const OUTWARD_PROPOLSION = 0.01;
+const MAX_DIAMETER = 32;
+const OUTWARD_PROPOLSION = 0.007;
+const PI2 = Math.PI * 2;
 
 export default function Graph({
   width,
@@ -47,16 +48,19 @@ export default function Graph({
     let phi = 0;
     // We want a radius that expands and contracts
     // We can use a sin function!! 
-    let radius = MAX_RADIUS * Math.cos(phi);
+    let radius = MAX_DIAMETER * Math.cos(phi);
     
     const intervalId = setInterval(() => {
-      radius = MAX_RADIUS * Math.cos(phi); 
+      radius = MAX_DIAMETER * Math.cos(phi); 
       const x = radius * Math.cos(theta);
       const y = radius * Math.sin(theta);
 
       theta += SPEED;
       phi += OUTWARD_PROPOLSION
-      phi = phi % (2*Math.PI); // To avoid this number exploding
+      // To avoid this number exploding
+      phi = phi % PI2; 
+      theta = theta % PI2;
+
 
       updateInputs([x, y]);
     }, 50)
