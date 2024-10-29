@@ -7,6 +7,7 @@ import Tooltip from "../Tooltip";
 
 const LINE_WIDTH = 0.5;
 const MAX_SHOW_INPUT_NEURONS = 7;
+const DECIMAL_PRECISION_NEURON = 3;
 
 function Neuron(props: {
   neuron?: NeuronType;
@@ -19,17 +20,24 @@ function Neuron(props: {
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const isActivated = props.activation > props.threshold;
 
+  const weightsText: string[] = props.parameters
+    ? props.parameters.weights
+        .slice(0, MAX_SHOW_INPUT_NEURONS + 1) // Then we can check
+        .map(
+          (w, i) => `weight${i + 1} = ${w.toFixed(DECIMAL_PRECISION_NEURON)}`
+        )
+    : ["No Weights"];
+
+  if (weightsText.length > MAX_SHOW_INPUT_NEURONS) weightsText.push("...");
+
   const tooltipText = `Layer: [${props.layer_number}]
-# of Parameters: ${props.parameters?.weights.length ?? -1 + 1}
+${(props.parameters?.weights.length ?? -1) + 1} Parameters
+${weightsText.join("\n")} 
 ${
   props.parameters
-    ? props.parameters.weights
-        .slice(0, 10)
-        .map((w, i) => `w${i + 1} = ${w.toFixed(6)}`)
-        .join("\n")
-    : "None"
-} 
-b = ${props.parameters ? props.parameters?.bias.toFixed(6) : "None"}
+    ? `bias = ${props.parameters?.bias.toFixed(DECIMAL_PRECISION_NEURON)}`
+    : "No Bias"
+}
 `;
 
   const activatedClassname = " border-none bg-green-500 text-black font-bold";
@@ -38,7 +46,9 @@ b = ${props.parameters ? props.parameters?.bias.toFixed(6) : "None"}
   return (
     <div
       id={props.nid}
-      className={`cursor-pointer duration-500 h-20 w-20 rounded-full flex items-center justify-center relative${isActivated ? activatedClassname : nonActivatedClassname}`}
+      className={`cursor-pointer duration-500 h-20 w-20 rounded-full flex items-center justify-center relative${
+        isActivated ? activatedClassname : nonActivatedClassname
+      }`}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
@@ -105,9 +115,8 @@ export default function Network(props: {
     div1: HTMLElement | null,
     div2: HTMLElement | null
   ) {
-    if (!(div1 && div2 && parent_element))
-      return;
-      // throw new Error("Elements can not be connected");
+    if (!(div1 && div2 && parent_element)) return;
+    // throw new Error("Elements can not be connected");
 
     // Get the positions of the two divs
     const parent_rect = parent_element.getBoundingClientRect();
@@ -170,23 +179,27 @@ export default function Network(props: {
   return (
     <div className="mr-24">
       <div
-      // removed items-center
+        // removed items-center
         className="flex flex-row w-min items-center relative z-30"
         id="neural_network"
       >
         <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
         {/* Input Layer */}
         <div className="w-min grid gap-4 mr-16">
-          {activations["A0"].slice(0, MAX_SHOW_INPUT_NEURONS).map((a: number, index: number) => (
-            <Neuron
-              nid={`NEURON_${index}`}
-              key={index}
-              activation={a}
-              threshold={Infinity}
-              layer_number={0}
-            />
-          ))}
-          {activations["A0"].length > MAX_SHOW_INPUT_NEURONS ? `${activations["A0"].length - MAX_SHOW_INPUT_NEURONS} more...`: ""}
+          {activations["A0"]
+            .slice(0, MAX_SHOW_INPUT_NEURONS)
+            .map((a: number, index: number) => (
+              <Neuron
+                nid={`NEURON_${index}`}
+                key={index}
+                activation={a}
+                threshold={Infinity}
+                layer_number={0}
+              />
+            ))}
+          {activations["A0"].length > MAX_SHOW_INPUT_NEURONS
+            ? `${activations["A0"].length - MAX_SHOW_INPUT_NEURONS} more...`
+            : ""}
         </div>
 
         {model.network.map((layer, layer_index) => {

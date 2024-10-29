@@ -2,12 +2,10 @@
 import { ClassificationType } from "@/math/network";
 
 
-type ShapeTypes = "circle" | "triangle";
 
 // Make sure label prediction is of size shape
 type CursorProps = {
   classification: ClassificationType;
-  shapes: ShapeTypes[];
   x: number;
   y: number;
   maxNNOutput: number; // The max number in nnOutputs list

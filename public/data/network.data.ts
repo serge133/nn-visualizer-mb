@@ -699,7 +699,7 @@ const MODEL_DATA = {
   [MODEL_VERSIONS.v1]: v1,
   [MODEL_VERSIONS.v2]: v2,
   [MODEL_VERSIONS.v3]: v3,
-  [MODEL_VERSIONS.v4]: [] // No data for this model
+  [MODEL_VERSIONS.v4]: [], // No data for this model
 };
 
 export default MODEL_DATA;

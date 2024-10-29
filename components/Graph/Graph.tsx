@@ -124,7 +124,6 @@ export default function Graph({
         >
           <CursorPoint
             classification={classificationType}
-            shapes={["circle", "circle", "circle"]}
             maxNNOutput={classification.value}
             labelPrediction={classification.label}
             x={scale(nnInputs[0])}
