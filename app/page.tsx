@@ -66,10 +66,15 @@ export default function Home() {
 
   return (
     <div className="w-full h-full p-5 overflow-auto relative">
-      <ChooseNetworkDropdown
-        changeNetworkVersion={setModelVersion}
-        version={modelVersion}
-      />
+      <div className="flex flex-row items-center justify-between mb-5">
+        <ChooseNetworkDropdown
+          changeNetworkVersion={setModelVersion}
+          version={modelVersion}
+        />
+        <p className="font-mono">
+        {model.description}  
+        </p>
+      </div>
       <div
         className="absolute top-10 left-0 -z-50"
         style={{ width: 1550, height: 850 }}

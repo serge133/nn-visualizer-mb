@@ -4321,6 +4321,7 @@ export type ModelType = {
   activation_functions: Function[];
   classificationType: ClassificationType;
   inputLength: number;
+  description: string;
 };
 
 export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
@@ -4330,6 +4331,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
     activation_thresholds: ACTIVATION_THRESHOLDS_V1,
     activation_functions: ACTIVATIONS_V1,
     inputLength: 2, // X and Y
+    description: "Basic 2 Layer model | Binary Classification"
   },
   [MODEL_VERSIONS.v2]: {
     network: NETWORK_V2,
@@ -4341,6 +4343,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
       sigmoid_activation,
     ],
     inputLength: 2, // X and Y
+    description: "3 Layer Model | Binary Classification"
   },
   [MODEL_VERSIONS.v3]: {
     network: NETWORK_V3,
@@ -4354,6 +4357,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
       softmax_activation, // CHANGE THIS
     ],
     inputLength: 2, // X and Y
+    description: "5 Layer Advanced Model | Categorical Classification"
   },
   [MODEL_VERSIONS.v4]: {
     network: NETWORK_V4,
@@ -4365,6 +4369,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
       softmax_activation,
     ],
     inputLength: 100,
+    description: "Huge 3 Layer Model | 10x10 Hand Written Digit Recognizer | Categorical Classification"
   },
 };
 
