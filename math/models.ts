@@ -7282,7 +7282,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
     // Styling
     neuronSize: 10,
     neuronSpacing: 0.1,
-    layerSpacing: 5,
+    layerSpacing: 10,
     lineWidth: 0.1
   },
 };
