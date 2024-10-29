@@ -16,7 +16,7 @@ import DrawGrid from "@/components/DrawGrid";
 const BG_IMAGES: { [key: number]: StaticImageData } = {
   [MODEL_VERSIONS.v1]: V1NetworkImage,
   [MODEL_VERSIONS.v2]: V2NetworkImage,
-  [MODEL_VERSIONS.v3]: V3NetworkImage
+  [MODEL_VERSIONS.v3]: V3NetworkImage,
 };
 
 export default function Home() {
