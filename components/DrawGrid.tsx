@@ -9,6 +9,7 @@ type DrawGridProps = {
   nnInputs: number[];
   nnOutputs: number[]
 };
+
 const DrawGrid = (props: DrawGridProps) => {
   // Initial grid state (all cells set to black)
   // One dimensional input array

@@ -5,7 +5,6 @@ import { LayerType, NeuronType } from "@/math/network";
 import { ReactElement, useEffect, useState } from "react";
 import Tooltip from "../Tooltip";
 
-const LINE_WIDTH = 0.5;
 const MAX_SHOW_INPUT_NEURONS = 7;
 const DECIMAL_PRECISION_NEURON = 3;
 
@@ -16,6 +15,7 @@ function Neuron(props: {
   threshold: number;
   parameters?: NeuronType;
   layer_number: number;
+  size: number;
 }) {
   const [showTooltip, setShowTooltip] = useState<boolean>(false);
   const isActivated = props.activation > props.threshold;
@@ -38,6 +38,7 @@ ${
     ? `bias = ${props.parameters?.bias.toFixed(DECIMAL_PRECISION_NEURON)}`
     : "No Bias"
 }
+OUTPUT = ${props.activation.toFixed(DECIMAL_PRECISION_NEURON)}
 `;
 
   const activatedClassname = " border-none bg-green-500 text-black font-bold";
@@ -46,16 +47,17 @@ ${
   return (
     <div
       id={props.nid}
-      className={`cursor-pointer duration-500 h-20 w-20 rounded-full flex items-center justify-center relative${
+      className={`cursor-pointer rounded-full flex items-center justify-center relative font-mono${
         isActivated ? activatedClassname : nonActivatedClassname
       }`}
+      style={{ width: props.size, height: props.size }}
       onMouseEnter={() => setShowTooltip(true)}
       onMouseLeave={() => setShowTooltip(false)}
     >
       <Tooltip title={props.nid} show={showTooltip}>
         {tooltipText}
       </Tooltip>
-      {props.activation.toFixed(2)}
+      {props.size >= 50 && props.activation.toFixed(2)}
     </div>
   );
 }
@@ -66,9 +68,15 @@ function Layer(props: {
   activations: number[];
   threshold: number;
   parameters: LayerType;
+  neuronSize: number;
+  neuronSpacing: number;
+  layerSpacing: number;
 }) {
   return (
-    <div className="w-min grid gap-4 mr-24">
+    <div 
+      className="w-min grid"
+      style={{ marginRight: `${props.layerSpacing}rem`, gap: `${props.neuronSpacing}rem`}}
+      >
       {props.neurons.map((neuron, index) => (
         <Neuron
           key={neuron.id}
@@ -78,6 +86,7 @@ function Layer(props: {
           activation={props.activations[index]}
           parameters={props.parameters[index]}
           layer_number={props.layer_number}
+          size={props.neuronSize}
         />
       ))}
     </div>
@@ -139,7 +148,7 @@ export default function Network(props: {
         x2={x2}
         y2={y2}
         stroke="white"
-        strokeWidth={LINE_WIDTH}
+        strokeWidth={model.lineWidth}
       />,
     ]);
   }
@@ -180,12 +189,12 @@ export default function Network(props: {
     <div className="mr-24">
       <div
         // removed items-center
-        className={`flex flex-row w-min ${model.nnClassname} relative z-30`}
+        className={`flex flex-row w-min items-center relative z-30`}
         id="neural_network"
       >
         <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
         {/* Input Layer */}
-        <div className="w-min grid gap-4 mr-16">
+        <div className="w-min grid" style={{ gap: `${model.neuronSpacing}rem`, marginRight: `${model.layerSpacing}rem` }}>
           {activations["A0"]
             .slice(0, MAX_SHOW_INPUT_NEURONS)
             .map((a: number, index: number) => (
@@ -195,6 +204,7 @@ export default function Network(props: {
                 activation={a}
                 threshold={Infinity}
                 layer_number={0}
+                size={model.neuronSize}
               />
             ))}
           {activations["A0"].length > MAX_SHOW_INPUT_NEURONS
@@ -212,6 +222,9 @@ export default function Network(props: {
               threshold={model.activation_thresholds[layer_index]}
               activations={layer_activations}
               parameters={model.network[layer_index]}
+              neuronSize={model.neuronSize}
+              layerSpacing={model.layerSpacing}
+              neuronSpacing={model.neuronSpacing}
             />
           );
         })}
