@@ -60,15 +60,17 @@ const DrawGrid = (props: DrawGridProps) => {
     <div>
       <span className="font-bold font-mono text-xl">Model Predicts {classifiction.label}</span>
       <div
-        className="grid grid-cols-10 grid-rows-10 border-2"
+        className="grid grid-cols-10 grid-rows-10 border-2 relative z-10"
         style={{ width: 500, height: 500 }}
         onMouseLeave={handleMouseUp} // Stop drawing if mouse leaves the grid
       >
+
+        <span className="absolute top-1/2 left-1/2 z-20 -translate-x-1/2 -translate-y-1/2 text-slate-500 select-none">Draw Here</span>
         {props.nnInputs.map((value, index) => (
           <div
             key={index}
-            className="w-full h-full"
-            style={{ backgroundColor: value === 1 ? "white" : "black" }}
+            className="w-full h-full z-30"
+            style={{ backgroundColor: value === 1 ? "white" : "transparent" }}
             onMouseDown={() => handleMouseDown(index)}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseUp={handleMouseUp}

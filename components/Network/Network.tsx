@@ -180,7 +180,7 @@ export default function Network(props: {
     <div className="mr-24">
       <div
         // removed items-center
-        className="flex flex-row w-min items-center relative z-30"
+        className={`flex flex-row w-min ${model.nnClassname} relative z-30`}
         id="neural_network"
       >
         <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
