@@ -10,15 +10,13 @@ import ChooseNetworkDropdown from "@/components/ChooseNetworkDropdown";
 import V1NetworkImage from "@/public/images/network_v1.jpg";
 import V2NetworkImage from "@/public/images/network_v2.jpg";
 import V3NetworkImage from "@/public/images/network_v3.jpg";
-import V4NetworkImage from "@/public/images/network_v4.jpg";
 import Credit from "@/components/Credit";
 import DrawGrid from "@/components/DrawGrid";
 
-const BG_IMAGES: { [key in MODEL_VERSIONS]: StaticImageData } = {
+const BG_IMAGES: { [key: number]: StaticImageData } = {
   [MODEL_VERSIONS.v1]: V1NetworkImage,
   [MODEL_VERSIONS.v2]: V2NetworkImage,
-  [MODEL_VERSIONS.v3]: V3NetworkImage,
-  [MODEL_VERSIONS.v4]: V4NetworkImage
+  [MODEL_VERSIONS.v3]: V3NetworkImage
 };
 
 export default function Home() {
@@ -46,8 +44,8 @@ export default function Home() {
     setInputs(Array(MODELS[modelVersion].inputLength).fill(0));
   }, [modelVersion]);
   // Input Length of input -> Model
-  const interactivityGraph: {[key: number]: () => ReactElement } = {
-    // If we have two inputs, we render the graph 
+  const interactivityGraph: { [key: number]: () => ReactElement } = {
+    // If we have two inputs, we render the graph
     2: () => (
       <Graph
         nnOutput={output}
@@ -61,7 +59,9 @@ export default function Home() {
       />
     ),
     // If we have 100 inputs we render a draw grid
-    100: () => <DrawGrid nnOutputs={output} nnInputs={inputs} updateInputs={setInputs} />,
+    100: () => (
+      <DrawGrid nnOutputs={output} nnInputs={inputs} updateInputs={setInputs} />
+    ),
   };
 
   return (
@@ -74,7 +74,9 @@ export default function Home() {
         className="absolute top-10 left-0 -z-50"
         style={{ width: 1550, height: 850 }}
       >
-        <Image src={BG_IMAGES[modelVersion]} alt="Test" />
+        {modelVersion in BG_IMAGES && (
+          <Image src={BG_IMAGES[modelVersion]} alt="Test" />
+        )}
       </div>
       <div
         className="flex flex-row overflow-visible flex-nowrap"
