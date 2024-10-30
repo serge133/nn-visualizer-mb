@@ -62,7 +62,7 @@ export default function Home() {
           changeNetworkVersion={setModelVersion}
           version={modelVersion}
         />
-        <p className="font-mono">
+        <p className="font-mono whitespace-pre-line">
         {model.description}  
         </p>
       </div>
