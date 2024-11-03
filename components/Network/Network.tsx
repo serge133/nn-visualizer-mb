@@ -159,7 +159,7 @@ export default function Network(props: {
 
     // Connecting the input layer to the neural network
     for (let i = 0; i < props.activations["A0"].length; i++) {
-      const nid = `NEURON_${i}`;
+      const nid = `NEURON 0-${i}`;
       const prev_neuron_html = document.getElementById(nid);
 
       // Connecting to the first layer of the neural network
@@ -199,7 +199,7 @@ export default function Network(props: {
             .slice(0, MAX_SHOW_INPUT_NEURONS)
             .map((a: number, index: number) => (
               <Neuron
-                nid={`NEURON_${index}`}
+                nid={`NEURON 0-${index}`}
                 key={index}
                 activation={a}
                 threshold={Infinity}

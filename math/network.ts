@@ -28,9 +28,9 @@ export function softmax_activation(layer: number[]): number[] {
 export const linear_activation = (x: number) => x;
 
 // Data Structure
-function create_neuron(weights: number[], bias: number): NeuronType {
+function create_neuron(weights: number[], bias: number, layer_num: number, neuron_num: number): NeuronType {
   return {
-    id: "NEURON_" + Math.random().toFixed(6).substring(2, 7),
+    id: `NEURON ${layer_num}-${neuron_num}`,
     weights,
     bias,
   };
@@ -39,13 +39,13 @@ function create_neuron(weights: number[], bias: number): NeuronType {
 // Data Structure
 // Creates neural network layer (not including the input layer!)
 // Weights is now a matrix
-function create_layer(weights: number[][], bias: number[]): LayerType {
+function create_layer(weights: number[][], bias: number[], layer_num: number): LayerType {
   const layer: NeuronType[] = [];
 
   for (let i = 0; i < weights.length; i++) {
     const neuron_weights = weights[i];
     const neuron_bias = bias[i];
-    layer.push(create_neuron(neuron_weights, neuron_bias));
+    layer.push(create_neuron(neuron_weights, neuron_bias, layer_num, i));
   }
 
   return layer;
@@ -64,7 +64,7 @@ export function create_network(
   // }
 
   const network = weights.map((layer_weights, idx) =>
-    create_layer(layer_weights, bias[idx])
+    create_layer(layer_weights, bias[idx], idx + 1)
   );
   return network;
 }
