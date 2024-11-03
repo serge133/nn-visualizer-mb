@@ -11,8 +11,8 @@
 }
 
 :root {
-  --background: #0a0a0a;
-  --foreground: #ededed;
+  --background: #fbfbfb;
+  --foreground: #171717;
 }
 
 /* If user is in dark mode */
@@ -48,4 +48,9 @@ body {
 
 ::-webkit-scrollbar-thumb:hover {
   background-color: rgba(0, 0, 0, 0.7); /* Darker on hover */
+}
+
+.svg_network_line {
+  stroke: var(--foreground);
+  fill-opacity: 1;
 }

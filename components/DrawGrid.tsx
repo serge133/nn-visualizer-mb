@@ -43,7 +43,7 @@ const DrawGrid = (props: DrawGridProps) => {
     handleClear();
   };
 
-  // Update cell color to white
+  // Update cell color to activation color
   const updateCellColor = (index: number) => {
     props.updateInputs((prevGrid: number[]) => {
       const newGrid = prevGrid.map((v, i) => {
@@ -71,7 +71,7 @@ const DrawGrid = (props: DrawGridProps) => {
           <div
             key={index}
             className="w-full h-full z-30"
-            style={{ backgroundColor: value === 1 ? "white" : "transparent" }}
+            style={{ backgroundColor: value === 1 ? "var(--foreground)" : "transparent" }}
             onMouseDown={() => handleMouseDown(index)}
             onMouseEnter={() => handleMouseEnter(index)}
             onMouseUp={handleMouseUp}

@@ -42,7 +42,7 @@ OUTPUT = ${props.activation.toFixed(DECIMAL_PRECISION_NEURON)}
 `;
 
   const activatedClassname = " border-none bg-green-500 text-black font-bold";
-  const nonActivatedClassname = " border bg-black text-slate-500";
+  const nonActivatedClassname = " border border-slate-500 text-slate-500";
 
   return (
     <div
@@ -100,22 +100,7 @@ export default function Network(props: {
 }) {
   const { version, activations, model } = props;
   const inputLength = activations["A0"].length;
-  // const [output, activations] = forward_propogation(
-  //   props.inputs, // One dimensional list of numbers
-  //   NETWORK_V1, // network with weights and biases
-  //   ACTIVATIONS_V1 // activation functions
-  // );
-
   const [lines, setLines] = useState<ReactElement[]>([]);
-
-  // props.updateOutput(output);
-  // function changeInput(e: ChangeEvent<HTMLInputElement>, index: number) {
-  //   setInputs((prevInputs) => {
-  //     const copyInputs = [...prevInputs];
-  //     copyInputs[index] = +e.target.value;
-  //     return copyInputs;
-  //   });
-  // }
 
   // Draws a line between the neurons of each layer
   // Parent needed to subtract out coordinates for relative positioning of svg line
@@ -147,7 +132,7 @@ export default function Network(props: {
         y1={y1}
         x2={x2}
         y2={y2}
-        stroke="white"
+        className="svg_network_line"
         strokeWidth={model.lineWidth}
       />,
     ]);
