@@ -56,12 +56,12 @@ const DrawGrid = (props: DrawGridProps) => {
     });
   };
 
-  const classifiction = makeClassification("categorical", props.nnOutputs);
+  const classification = makeClassification("categorical", props.nnOutputs);
   return (
     <div>
-      <span className="font-bold font-mono text-xl">Model Predicts {classifiction.label}</span>
+      <span className="font-bold font-mono text-xl">Model Predicts {classification.label}</span>
       <div
-        className="grid grid-cols-10 grid-rows-10 border-2 relative z-10"
+        className="grid grid-cols-10 grid-rows-10 relative z-10 border-2"
         style={{ width: 500, height: 500 }}
         onMouseLeave={handleMouseUp} // Stop drawing if mouse leaves the grid
       >

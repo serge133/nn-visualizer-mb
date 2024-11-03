@@ -113,8 +113,8 @@ export default function Graph({
 
   return (
     <div className="inline-block">
-      <h1 className="text-slate-500">Model Predicts {classification.label}</h1>
-      <div className="border rounded-md border-slate-700 cursor-none" style={{ borderColor: COLORS[classification.label]}}>
+      <span className="font-bold font-mono text-xl">Model Predicts {classification.label}</span>
+      <div className="border-2 rounded-md border-slate-700 cursor-none" style={{ borderColor: COLORS[classification.label]}}>
         <svg
           width={width}
           height={height}

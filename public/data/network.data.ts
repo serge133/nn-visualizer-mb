@@ -695,6 +695,7 @@ const v3 = [
   { x: -4.5459071012739, y: 24.5057371099881, label: 2 },
   { x: 23.8878804881308, y: -3.05324889173901, label: 2 },
 ];
+
 const MODEL_DATA = {
   [MODEL_VERSIONS.v1]: v1,
   [MODEL_VERSIONS.v2]: v2,
