@@ -43,17 +43,24 @@ const CursorPoint = (props: CursorProps) => {
   const [color, opacity] = classificationStyleFunction[props.classification]();
 
   return (
-    <circle
-      key={"Cursor"}
-      r={20}
-      cx={props.x}
-      cy={props.y}
-      opacity={1}
-      stroke={color}
-      fill={color}
-      fillOpacity={opacity}
-      strokeWidth={1}
-    />
+    <g transform={`translate(${props.x}, ${props.y})`}>
+      <circle
+        key={"Cursor"}
+        r={20}
+        cx={0}
+        cy={0}
+        opacity={1}
+        stroke={color}
+        fill={color}
+        fillOpacity={opacity}
+        strokeWidth={1}
+      />
+      <text 
+        className="font-bold font-mono cursor-text-graph" 
+        x={10} 
+        fill="var(--foreground)"
+        y={-20}>{Math.round(props.maxNNOutput * 100)}%</text>
+    </g>
   );
 };
 
