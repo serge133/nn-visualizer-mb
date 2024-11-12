@@ -1,80 +1,79 @@
-"use client";
-import Graph from "@/components/Graph/Graph";
-import Network from "@/components/Network/Network";
-import MODEL_DATA from "@/public/data/network.data";
-import { ReactElement, useEffect, useState } from "react";
-import { forward_propogation } from "@/math/network";
-import { MODELS, MODEL_VERSIONS } from "@/math/models";
-import ChooseNetworkDropdown from "@/components/ChooseNetworkDropdown";
-import Credit from "@/components/Credit";
-import DrawGrid from "@/components/DrawGrid";
-
+import Image from "next/image";
+import Signature from "@/public/signature.png";
+import { ReactNode } from "react";
+import Link from "next/link";
 
 export default function Home() {
-  const [inputs, setInputs] = useState<number[]>(
-    Array(MODELS[MODEL_VERSIONS.v1].inputLength).fill(0)
+  const P = ({ children }: { children: string | ReactNode }) => (
+    <>
+      <p>{children}</p>
+      <br />
+    </>
   );
-  const [modelVersion, setModelVersion] = useState<MODEL_VERSIONS>(
-    MODEL_VERSIONS.v1
-  );
-
-  const model = MODELS[modelVersion];
-
-  const [output, activations] = forward_propogation(
-    inputs,
-    model.network,
-    model.activation_functions
-  );
-
-  // function updateInputs(update: number[]) {
-  //   setInputs(update);
-  // }
-
-  // Everytime model verion changes
-  useEffect(() => {
-    setInputs(Array(MODELS[modelVersion].inputLength).fill(0));
-  }, [modelVersion]);
-  // Input Length of input -> Model
-  const interactivityGraph: { [key: number]: () => ReactElement } = {
-    // If we have two inputs, we render the graph
-    2: () => (
-      <Graph
-        nnOutput={output}
-        nnInputs={inputs}
-        classificationType={model.classificationType}
-        width={600}
-        height={600}
-        data={MODEL_DATA[modelVersion]}
-        updateInputs={setInputs}
-        animateDefault
-      />
-    ),
-    // If we have 100 inputs we render a draw grid
-    100: () => (
-      <DrawGrid nnOutputs={output} nnInputs={inputs} updateInputs={setInputs} />
-    ),
-  };
-
   return (
-    <div className="w-full h-full p-5 overflow-auto relative">
-      <div className="flex flex-row items-center justify-between mb-5">
-        <ChooseNetworkDropdown
-          changeNetworkVersion={setModelVersion}
-          version={modelVersion}
-        />
-        <p className="font-mono whitespace-pre-line">
-        {model.description}  
-        </p>
+    <div className="w-full h-full overflow-auto">
+      <div className="paper font-mono">
+        <h1 className="font-bold text-xl">Message from Creator</h1>
+        <br />
+        <P>
+          Hey, I’m Michael Batrakov, and I’m really excited to share one of my
+          most ambitious projects so far: a Neural Network Visualizer built with
+          Next.js. This project brings together three of my biggest
+          passions — Machine Learning, Data Visualization, and Web
+          Development — into one interactive experience.
+        </P>
+        <P>
+          What sets this project apart is that I built the forward propagation
+          entirely from scratch in TypeScript, showcasing my expertise in data
+          structures and low-level algorithm design — no external libraries
+          involved. I created this platform as both a learning tool for myself
+          and a resource for others to grasp the inner workings of deep neural
+          networks.
+        </P>
+        <P>
+          For model v4, a handwritten digit recognizer, I even collected all the
+          data myself — no downloads or external datasets were used. My skills in
+          algorithms are further highlighted through data augmentation
+          techniques, where I shifted digit positions within a 10x10 matrix to
+          expand the dataset and improve training. For a closer look at the
+          process, check out the detailed steps in the
+          <a
+            href="https://colab.research.google.com/drive/15M43XMWcooOzF02Js5jCcnSvA8oRWaI1?usp=sharing"
+            className="text-rose-500"
+            target="_blank"
+          >
+            {" "}
+            Training Link
+          </a>.
+        </P>
+        <P>
+          Ultimately, this project is more than just a visualization tool — it’s a
+          way to demystify deep neural networks. I hope it inspires others
+          to dive deeper into machine learning and see the beauty in these
+          algorithms!
+        </P>
+        <P>
+          P.S. If you have any questions or concerns send me an email at
+          mishou@g.ucla.edu
+        </P>
+        <P>
+          P.P.S. Feel free to connect with me on{" "}
+          <a
+            href="https://www.linkedin.com/in/michaelbatrakov/"
+            target="_blank"
+            className="text-rose-500"
+          >
+            LinkedIn
+          </a>
+        </P>
+        <P>
+          Try{" "}
+          <Link className="text-rose-500" href="/v1">
+            Model V1
+          </Link>
+        </P>
+        <Image height={50} src={Signature} alt="Michael Batrakov" />
       </div>
-      <div className="flex flex-row overflow-visible flex-nowrap">
-        <Network
-          activations={activations}
-          model={model}
-          version={modelVersion}
-        />
-        {interactivityGraph[MODELS[modelVersion].inputLength]()}
-      </div>
-      <Credit />
     </div>
   );
 }

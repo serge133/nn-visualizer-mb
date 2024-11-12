@@ -7,6 +7,9 @@ const config: Config = {
     "./app/**/*.{js,ts,jsx,tsx,mdx}",
   ],
   theme: {
+    fontFamily: {
+      "mono": ["IBM Plex Mono", "monospace"]
+    },
     extend: {
       colors: {
         background: "var(--background)",

@@ -47,7 +47,7 @@ OUTPUT = ${props.activation.toFixed(DECIMAL_PRECISION_NEURON)}
   return (
     <div
       id={props.nid}
-      className={`cursor-pointer rounded-full flex items-center justify-center relative font-mono${
+      className={`cursor-pointer duration-300 rounded-full flex items-center justify-center relative font-mono${
         isActivated ? activatedClassname : nonActivatedClassname
       }`}
       style={{ width: props.size, height: props.size }}
@@ -73,10 +73,13 @@ function Layer(props: {
   layerSpacing: number;
 }) {
   return (
-    <div 
+    <div
       className="w-min grid"
-      style={{ marginRight: `${props.layerSpacing}rem`, gap: `${props.neuronSpacing}rem`}}
-      >
+      style={{
+        marginRight: `${props.layerSpacing}rem`,
+        gap: `${props.neuronSpacing}rem`,
+      }}
+    >
       {props.neurons.map((neuron, index) => (
         <Neuron
           key={neuron.id}
@@ -171,49 +174,52 @@ export default function Network(props: {
   }, [version, inputLength]);
 
   return (
-    <div className="mr-24">
+    <div
+      className={`flex flex-row w-min items-center relative z-30`}
+      id="neural_network"
+    >
+      <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
+      {/* Input Layer */}
       <div
-        // removed items-center
-        className={`flex flex-row w-min items-center relative z-30`}
-        id="neural_network"
+        className="w-min grid"
+        style={{
+          gap: `${model.neuronSpacing}rem`,
+          marginRight: `${model.layerSpacing}rem`,
+        }}
       >
-        <svg className="absolute top-0 left-0 w-full h-full">{lines}</svg>
-        {/* Input Layer */}
-        <div className="w-min grid" style={{ gap: `${model.neuronSpacing}rem`, marginRight: `${model.layerSpacing}rem` }}>
-          {activations["A0"]
-            .slice(0, MAX_SHOW_INPUT_NEURONS)
-            .map((a: number, index: number) => (
-              <Neuron
-                nid={`NEURON 0-${index}`}
-                key={index}
-                activation={a}
-                threshold={Infinity}
-                layer_number={0}
-                size={model.neuronSize}
-              />
-            ))}
-          {activations["A0"].length > MAX_SHOW_INPUT_NEURONS
-            ? `${activations["A0"].length - MAX_SHOW_INPUT_NEURONS} more...`
-            : ""}
-        </div>
-
-        {model.network.map((layer, layer_index) => {
-          const layer_activations = activations[`A${layer_index + 1}`];
-          return (
-            <Layer
-              key={layer[0].bias}
-              layer_number={layer_index + 1}
-              neurons={layer}
-              threshold={model.activation_thresholds[layer_index]}
-              activations={layer_activations}
-              parameters={model.network[layer_index]}
-              neuronSize={model.neuronSize}
-              layerSpacing={model.layerSpacing}
-              neuronSpacing={model.neuronSpacing}
+        {activations["A0"]
+          .slice(0, MAX_SHOW_INPUT_NEURONS)
+          .map((a: number, index: number) => (
+            <Neuron
+              nid={`NEURON 0-${index}`}
+              key={index}
+              activation={a}
+              threshold={Infinity}
+              layer_number={0}
+              size={model.neuronSize}
             />
-          );
-        })}
+          ))}
+        {activations["A0"].length > MAX_SHOW_INPUT_NEURONS
+          ? `${activations["A0"].length - MAX_SHOW_INPUT_NEURONS} more...`
+          : ""}
       </div>
+
+      {model.network.map((layer, layer_index) => {
+        const layer_activations = activations[`A${layer_index + 1}`];
+        return (
+          <Layer
+            key={layer[0].bias}
+            layer_number={layer_index + 1}
+            neurons={layer}
+            threshold={model.activation_thresholds[layer_index]}
+            activations={layer_activations}
+            parameters={model.network[layer_index]}
+            neuronSize={model.neuronSize}
+            layerSpacing={layer_index + 1 === model.network.length ? 0 : model.layerSpacing}
+            neuronSpacing={model.neuronSpacing}
+          />
+        );
+      })}
     </div>
   );
 }

@@ -132,7 +132,7 @@ export default function Graph({
           {points}
         </svg>
       </div>
-      <label>
+      <label className="font-mono">
         <input 
             type="checkbox" 
             checked={animateCheckbox}

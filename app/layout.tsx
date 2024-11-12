@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Header from "@/components/Header";
+
 
 export const metadata: Metadata = {
   title: "NN Visualizer",
@@ -11,12 +13,18 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+
   return (
     <html lang="en">
       <body
-        className={`antialiased w-screen h-screen overflow-hidden`}
+        className={`antialiased w-screen h-screen overflow-hidden flex flex-col`}
       >
-        {children}
+        {/* Header */}
+        <Header />
+        {/* Body */}
+        <div className="flex-1 overflow-auto">
+          {children}
+        </div>
       </body>
     </html>
   );
