@@ -9703,7 +9703,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
     description:
       "10x10 Hand Written Digit Recognizer | 3 Layer Model \nCategorical Classification | 20% Dropout in Hidden Layer 1",
     // Styling
-    neuronSize: 10,
+    neuronSize: 20,
     neuronSpacing: 0.1,
     layerSpacing: 10,
     lineWidth: 0.1,

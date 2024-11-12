@@ -12,7 +12,7 @@ export default function Home() {
   );
   return (
     <div className="w-full h-full overflow-auto">
-      <div className="paper font-mono">
+      <div className="paper font-mono w-full lg:w-2/3">
         <h1 className="font-bold text-xl">Message from Creator</h1>
         <br />
         <P>

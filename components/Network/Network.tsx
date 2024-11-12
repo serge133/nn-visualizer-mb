@@ -5,8 +5,9 @@ import { LayerType, NeuronType } from "@/math/network";
 import { ReactElement, useEffect, useState } from "react";
 import Tooltip from "../Tooltip";
 
-const MAX_SHOW_INPUT_NEURONS = 7;
+const MAX_SHOW_INPUT_NEURONS = 25;
 const DECIMAL_PRECISION_NEURON = 3;
+const TOOLTIP_MAX_SHOW_WEIGHTS = 5;
 
 function Neuron(props: {
   neuron?: NeuronType;
@@ -22,13 +23,13 @@ function Neuron(props: {
 
   const weightsText: string[] = props.parameters
     ? props.parameters.weights
-        .slice(0, MAX_SHOW_INPUT_NEURONS + 1) // Then we can check
+        .slice(0, TOOLTIP_MAX_SHOW_WEIGHTS + 1) // Then we can check
         .map(
           (w, i) => `weight${i + 1} = ${w.toFixed(DECIMAL_PRECISION_NEURON)}`
         )
     : ["No Weights"];
 
-  if (weightsText.length > MAX_SHOW_INPUT_NEURONS) weightsText.push("...");
+  if (weightsText.length > TOOLTIP_MAX_SHOW_WEIGHTS) weightsText.push("...");
 
   const tooltipText = `Layer: [${props.layer_number}]
 ${(props.parameters?.weights.length ?? -1) + 1} Parameters
@@ -80,7 +81,9 @@ function Layer(props: {
         gap: `${props.neuronSpacing}rem`,
       }}
     >
-      {props.neurons.map((neuron, index) => (
+      {props.neurons
+      .slice(0, MAX_SHOW_INPUT_NEURONS)
+      .map((neuron, index) => (
         <Neuron
           key={neuron.id}
           nid={neuron.id}
@@ -92,6 +95,9 @@ function Layer(props: {
           size={props.neuronSize}
         />
       ))}
+      {props.neurons.length > MAX_SHOW_INPUT_NEURONS
+          ? `${props.neurons.length - MAX_SHOW_INPUT_NEURONS} more...`
+          : ""}
     </div>
   );
 }
