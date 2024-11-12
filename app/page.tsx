@@ -72,7 +72,7 @@ export default function Home() {
             Model V1
           </Link>
         </P>
-        <Image height={50} src={Signature} alt="Michael Batrakov" />
+        <Image style={{ backgroundColor: "#fbfbfb"}} height={50} src={Signature} alt="Michael Batrakov" />
       </div>
     </div>
   );
