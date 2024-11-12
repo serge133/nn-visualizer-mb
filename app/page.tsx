@@ -2,6 +2,7 @@ import Image from "next/image";
 import Signature from "@/public/signature.png";
 import { ReactNode } from "react";
 import Link from "next/link";
+import ParticleBackground from "@/components/Particles";
 
 export default function Home() {
   const P = ({ children }: { children: string | ReactNode }) => (
@@ -12,15 +13,15 @@ export default function Home() {
   );
   return (
     <div className="w-full h-full overflow-auto">
-      <div className="paper font-mono w-full lg:w-2/3 text-lg">
+      <div className="paper font-mono w-full lg:w-2/3 text-lg z-10">
         <h1 className="font-bold text-xl">Message from Creator</h1>
         <br />
         <P>
           Hey, I’m Michael Batrakov, and I’m really excited to share one of my
           most ambitious projects so far: a Neural Network Visualizer built with
-          Next.js. This project brings together three of my biggest
-          passions — Machine Learning, Data Visualization, and Web
-          Development — into one interactive experience.
+          Next.js. This project brings together three of my biggest passions —
+          Machine Learning, Data Visualization, and Web Development — into one
+          interactive experience.
         </P>
         <P>
           What sets this project apart is that I built the forward propagation
@@ -32,8 +33,8 @@ export default function Home() {
         </P>
         <P>
           For model v4, a handwritten digit recognizer, I even collected all the
-          data myself — no downloads or external datasets were used. My skills in
-          algorithms are further highlighted through data augmentation
+          data myself — no downloads or external datasets were used. My skills
+          in algorithms are further highlighted through data augmentation
           techniques, where I shifted digit positions within a 10x10 matrix to
           expand the dataset and improve training. For a closer look at the
           process, check out the detailed steps in the
@@ -44,12 +45,13 @@ export default function Home() {
           >
             {" "}
             Training Link
-          </a>.
+          </a>
+          .
         </P>
         <P>
-          Ultimately, this project is more than just a visualization tool — it’s a
-          way to demystify deep neural networks. I hope it inspires others
-          to dive deeper into machine learning and see the beauty in these
+          Ultimately, this project is more than just a visualization tool — it’s
+          a way to demystify deep neural networks. I hope it inspires others to
+          dive deeper into machine learning and see the beauty in these
           algorithms!
         </P>
         <P>
@@ -72,8 +74,14 @@ export default function Home() {
             Model V1
           </Link>
         </P>
-        <Image style={{ backgroundColor: "#fbfbfb"}} height={50} src={Signature} alt="Michael Batrakov" />
+        <Image
+          style={{ backgroundColor: "#fbfbfb" }}
+          height={50}
+          src={Signature}
+          alt="Michael Batrakov"
+        />
       </div>
+      <ParticleBackground />
     </div>
   );
 }

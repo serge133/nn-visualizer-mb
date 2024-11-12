@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 
 export const metadata: Metadata = {
   title: "NN Visualizer",
-  description: "A visualization tool for fully connected neural networks",
+  description: "A visualization tool for fully connected deep neural networks.",
 };
 
 export default function RootLayout({
