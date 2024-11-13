@@ -66,8 +66,10 @@ body {
   border: 1px solid #e0e0e0;
   line-height: 1.6;
   text-align: left;
-  height: fit-content;
+  height: calc(100% - 10px);
+  margin-top: 5px;
   margin: auto;
-  margin-bottom: 10px;
+  /* margin-bottom: 10px; */
+  overflow: auto;
   /* font-family: Arial, sans-serif; */
 }
