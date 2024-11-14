@@ -9,68 +9,61 @@ import {
 
 // * --------- NETWORK V1 ---------
 // Weights of V1 network
-const WEIGHTS_V1 = [
-  [
-    [0.34660286, -0.01123584],
-    [-0.16000803, 0.37327516],
-    [-0.20330293, -0.285043],
-    [0.03866423, 0.00664284],
-  ], // First Layer
-  [[-0.819887, -0.60944384, -0.60550654, 0.81135994]], // Output Layer
-];
+const WEIGHTS_V1 = [[[-0.4062458276748657, -0.27913016080856323], [-0.14246341586112976, 0.5944157838821411], [0.7275742888450623, -0.1283557116985321], [0.016319969668984413, 0.09264891594648361]], [[-1.2106497287750244, -1.280030608177185, -0.7134338617324829, 1.8822617530822754]]];
 
 // Bias of V1 Network
-const BIAS_V1 = [[-1.3854994, -1.2200477, -0.6707291, 2.2454503], [1.962239]];
+const BIAS_V1 = [[-2.5740807056427, -1.4413264989852905, -1.564166784286499, 3.7522456645965576], [2.8565621376037598]];
 // The thresholds of each layer that cause neuron to glow (not including input)
 
+// const NETWORK_V1 = create_network(WEIGHTS_V1, BIAS_V1);
 // Compiled network
 const NETWORK_V1 = [
-  [
-      {
-          "id": "NEURON 1-0",
-          "weights": [
-              0.34660286,
-              -0.01123584
-          ],
-          "bias": -1.3854994
-      },
-      {
-          "id": "NEURON 1-1",
-          "weights": [
-              -0.16000803,
-              0.37327516
-          ],
-          "bias": -1.2200477
-      },
-      {
-          "id": "NEURON 1-2",
-          "weights": [
-              -0.20330293,
-              -0.285043
-          ],
-          "bias": -0.6707291
-      },
-      {
-          "id": "NEURON 1-3",
-          "weights": [
-              0.03866423,
-              0.00664284
-          ],
-          "bias": 2.2454503
-      }
-  ],
-  [
-      {
-          "id": "NEURON 2-0",
-          "weights": [
-              -0.819887,
-              -0.60944384,
-              -0.60550654,
-              0.81135994
-          ],
-          "bias": 1.962239
-      }
-  ]
+    [
+        {
+            "id": "NEURON 1-0",
+            "weights": [
+                -0.4062458276748657,
+                -0.27913016080856323
+            ],
+            "bias": -2.5740807056427
+        },
+        {
+            "id": "NEURON 1-1",
+            "weights": [
+                -0.14246341586112976,
+                0.5944157838821411
+            ],
+            "bias": -1.4413264989852905
+        },
+        {
+            "id": "NEURON 1-2",
+            "weights": [
+                0.7275742888450623,
+                -0.1283557116985321
+            ],
+            "bias": -1.564166784286499
+        },
+        {
+            "id": "NEURON 1-3",
+            "weights": [
+                0.016319969668984413,
+                0.09264891594648361
+            ],
+            "bias": 3.7522456645965576
+        }
+    ],
+    [
+        {
+            "id": "NEURON 2-0",
+            "weights": [
+                -1.2106497287750244,
+                -1.280030608177185,
+                -0.7134338617324829,
+                1.8822617530822754
+            ],
+            "bias": 2.8565621376037598
+        }
+    ]
 ];
 
 
@@ -9651,7 +9644,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
       sigmoid_activation
     ],
     inputLength: 2, // X and Y
-    description: "Basic 2 Layer model | Binary Classification",
+    description: "Basic 2 Layer model | Binary Classification\n Linear -> ReLU -> Sigmoid",
     neuronSize: 80,
     neuronSpacing: 2,
     layerSpacing: 4,
@@ -9667,7 +9660,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
       sigmoid_activation,
     ],
     inputLength: 2, // X and Y
-    description: "3 Layer Model | Binary Classification",
+    description: "3 Layer Model | Binary Classification\n Linear -> ReLU -> ReLU -> Sigmoid",
     neuronSize: 80,
     neuronSpacing: 2,
     layerSpacing: 4,
@@ -9684,7 +9677,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
       softmax_activation, // CHANGE THIS
     ],
     inputLength: 2, // X and Y
-    description: "4 Layer Advanced Model | Categorical Classification",
+    description: "4 Layer Advanced Model | Categorical Classification\n Linear -> ReLU -> ReLU -> ReLU -> Softmax",
     neuronSize: 50,
     neuronSpacing: 2,
     layerSpacing: 4,
@@ -9701,7 +9694,7 @@ export const MODELS: { [key in MODEL_VERSIONS]: ModelType } = {
     ],
     inputLength: 100,
     description:
-      "10x10 Hand Written Digit Recognizer | 3 Layer Model \nCategorical Classification | 20% Dropout in Hidden Layer 1",
+      "10x10 Hand Written Digit Recognizer | 3 Layer Model \nCategorical Classification | 20% Dropout\n Linear -> ReLU with 20% Dropout -> ReLU -> Softmax",
     // Styling
     neuronSize: 20,
     neuronSpacing: 0.1,

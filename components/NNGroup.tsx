@@ -8,7 +8,7 @@ export default function NNGroup({ children, network, description }: { children: 
     <div className="w-full h-full">
       <div className="flex flex-row flex-wrap h-full overflow-auto px-5">
       <div className="flex flex-col max-h-full flex-1 items-center w-fit">
-        <p className="text-center font-mono rounded-sm mb-2 font-bold">
+        <p className="text-center font-mono rounded-sm mb-2 whitespace-pre-line">
           {description}
         </p>
         {network}
