@@ -11,7 +11,7 @@ export type NetworkType = LayerType[];
 export type ClassificationType = "binary" | "categorical";
 
 export function relu_activation(layer: number[]): number[] {
-  return layer.map(activation_val => Math.max(activation_val, 0));
+  return layer.map((activation_val) => Math.max(activation_val, 0));
 }
 
 export function sigmoid_activation(layer: number[]): number[] {
@@ -20,15 +20,25 @@ export function sigmoid_activation(layer: number[]): number[] {
 
 export function softmax_activation(layer: number[]): number[] {
   // Calculates sum(exp(layer))
-  const total_exp_sum = layer.reduce((accumulator, activationVal) => accumulator + Math.exp(activationVal), 0);
-  return layer.map(activation_val => Math.exp(activation_val) / total_exp_sum);
+  const total_exp_sum = layer.reduce(
+    (accumulator, activationVal) => accumulator + Math.exp(activationVal),
+    0
+  );
+  return layer.map(
+    (activation_val) => Math.exp(activation_val) / total_exp_sum
+  );
 }
 
 // The simplest activation function
 export const linear_activation = (x: number) => x;
 
 // Data Structure
-function create_neuron(weights: number[], bias: number, layer_num: number, neuron_num: number): NeuronType {
+function create_neuron(
+  weights: number[],
+  bias: number,
+  layer_num: number,
+  neuron_num: number
+): NeuronType {
   return {
     id: `NEURON ${layer_num}-${neuron_num}`,
     weights,
@@ -39,7 +49,11 @@ function create_neuron(weights: number[], bias: number, layer_num: number, neuro
 // Data Structure
 // Creates neural network layer (not including the input layer!)
 // Weights is now a matrix
-function create_layer(weights: number[][], bias: number[], layer_num: number): LayerType {
+function create_layer(
+  weights: number[][],
+  bias: number[],
+  layer_num: number
+): LayerType {
   const layer: NeuronType[] = [];
 
   for (let i = 0; i < weights.length; i++) {
@@ -110,7 +124,7 @@ export function forward_propogation(
     cache[`Z${layer + 1}`] = Z;
 
     // Applies activation
-    const A = activation_functions[layer](Z)
+    const A = activation_functions[layer](Z);
     cache[`A${layer + 1}`] = A;
     last_activation = `A${layer + 1}`;
   }
